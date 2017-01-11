@@ -8,7 +8,7 @@ import LoggerAPI
 
 class HttpController {
     let router: Router
-    let publicHttpsPort: Int
+    let publicHttpsPort: Int?
 
     var port: Int {
         get { return 8090 }
@@ -18,11 +18,16 @@ class HttpController {
         get { return "0.0.0.0" }
     }
 
-    init(publicHttpsPort: Int) throws {
+    init(publicHttpsPort: Int?) throws {
         self.publicHttpsPort = publicHttpsPort
         router = Router()
-        router.get("/\\.well-known/acme-challenge/", middleware: StaticFileServer(path: "/tmp/acme-challenge"))
-        router.all("/(?!\\.well-known/acme-challenge/).+", handler: redirectToHttps)
+        router.get("/\\.well-known/acme-challenge/",
+                   middleware: StaticFileServer(path: "/tmp/shorts-salad/.well-known/acme-challenge/"))
+        if (publicHttpsPort != nil) {
+            router.all("/(?!\\.well-known/acme-challenge/).+", handler: redirectToHttps)
+        } else {
+            router.all("/", middleware: StaticFileServer())
+        }
     }
 
     public func redirectToHttps(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
@@ -30,8 +35,8 @@ class HttpController {
         response.headers["Content-Type"] = "text/plain; charset=utf-8"
         var httpsPath = "https://"
         httpsPath += request.hostname
-        if (publicHttpsPort != 443) {
-            httpsPath += ":" + publicHttpsPort.description
+        if (publicHttpsPort! != 443) {
+            httpsPath += ":" + publicHttpsPort!.description
         }
         httpsPath += request.urlURL.path
         if (request.urlURL.query != nil) {

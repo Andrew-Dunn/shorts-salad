@@ -11,6 +11,7 @@ class SslConfig {
     let keyPath: String;
     let certPath: String;
     let publicHttpsPort: Int;
+    let enabled: Bool;
 
     init(configPath: String) {
         do {
@@ -27,13 +28,14 @@ class SslConfig {
             } else {
                 publicHttpsPort = 443
             }
-        } catch let error as NSError {
-            Log.error("error loading contentsOf url \(configPath)")
-            Log.error(error.localizedDescription)
+            enabled = true;
+        } catch let error as Error {
+            Log.warning("Could not load SSL config at \(configPath)")
             selfSigned = false
             keyPath = ""
             certPath = ""
             publicHttpsPort = 443
+            enabled = false
         }
     }
 
@@ -49,7 +51,15 @@ class SslConfig {
         return keyPath;
     }
 
-    func getHttpsPort() -> Int {
-        return publicHttpsPort;
+    func getHttpsPort() -> Int? {
+        if (enabled) {
+            return publicHttpsPort;
+        } else {
+            return nil;
+        }
+    }
+
+    func isEnabled() -> Bool {
+        return enabled;
     }
 }

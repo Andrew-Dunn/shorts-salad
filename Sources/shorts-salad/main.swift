@@ -14,18 +14,22 @@ do {
     let httpController = try HttpController(publicHttpsPort: sslConfig.getHttpsPort())
     let mainController = try MainController()
 
-    let ssl = SSLConfig(withCACertificateDirectory: nil,
-                              usingCertificateFile: sslConfig.getCertPath(),
-                                       withKeyFile: sslConfig.getKeyPath(),
-                              usingSelfSignedCerts: sslConfig.isSelfSigned(),
-                                       cipherSuite: "ALL")
-
-    Log.info(sslConfig.isSelfSigned().description)
-    Log.info(sslConfig.getCertPath())
-    Log.info(sslConfig.getKeyPath())
-
     Kitura.addHTTPServer(onPort: httpController.port, with: httpController.router)
-    Kitura.addHTTPServer(onPort: mainController.port, with: mainController.router, withSSL: ssl)
+
+    if (sslConfig.isEnabled()) {
+        let ssl = SSLConfig(withCACertificateDirectory: nil,
+                usingCertificateFile: sslConfig.getCertPath(),
+                withKeyFile: sslConfig.getKeyPath(),
+                usingSelfSignedCerts: sslConfig.isSelfSigned(),
+                cipherSuite: "ALL")
+
+        Log.info(sslConfig.isSelfSigned().description)
+        Log.info(sslConfig.getCertPath())
+        Log.info(sslConfig.getKeyPath())
+
+        Kitura.addHTTPServer(onPort: mainController.port, with: mainController.router, withSSL: ssl)
+    }
+
     Kitura.run()
 } catch let error {
     Log.info(error.localizedDescription)
