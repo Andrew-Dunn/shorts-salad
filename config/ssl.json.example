@@ -1,0 +1,6 @@
+{
+  "selfSigned": true,
+  "keyPath": "/home/andrew/p/shorts-salad/config/key.pem",
+  "certPath": "/home/andrew/p/shorts-salad/config/cert.pem",
+  "port": 8091
+}

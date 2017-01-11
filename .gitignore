@@ -8,4 +8,5 @@
 # Build Artifact Ignores
 /.build
 /cmake-build-debug
-/config
+/config/*
+!/config/*.example
