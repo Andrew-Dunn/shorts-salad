@@ -5,14 +5,9 @@ MAINTAINER Andrew Dunn <randy@🖕👖.ws>
 RUN wget https://dl.eff.org/certbot-auto && \
     chmod a+x certbot-auto
 
-# Download repo
-ARG CHECKOUT=master
-RUN git clone https://github.com/Andrew-Dunn/shorts-salad.git
-
-# Checkout desired branch
-RUN cd shorts-salad && \
-    git checkout $CHECKOUT && \
-    cd ..
+# Load code
+RUN mkdir shorts-salad
+COPY . /shorts-salad
 
 # Build webserver
 RUN cd shorts-salad && \
