@@ -1,6 +1,11 @@
+# Editor Ignores
 .DS_Store
-/.build
 /Packages
 /*.xcodeproj
 /.idea
+.*.swp
+
+# Build Artifact Ignores
+/.build
 /cmake-build-debug
+/config
