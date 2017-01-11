@@ -10,6 +10,7 @@ class SslConfig {
     let selfSigned: Bool;
     let keyPath: String;
     let certPath: String;
+    let publicHttpsPort: Int;
 
     init(configPath: String) {
         do {
@@ -20,12 +21,19 @@ class SslConfig {
             selfSigned = json["selfSigned"].bool!
             keyPath = json["keyPath"].string!
             certPath = json["certPath"].string!
+
+            if (json["port"].int != nil) {
+                publicHttpsPort = json["port"].int!
+            } else {
+                publicHttpsPort = 443
+            }
         } catch let error as NSError {
             Log.error("error loading contentsOf url \(configPath)")
             Log.error(error.localizedDescription)
             selfSigned = false
             keyPath = ""
             certPath = ""
+            publicHttpsPort = 443
         }
     }
 
@@ -39,5 +47,9 @@ class SslConfig {
 
     func getKeyPath() -> String {
         return keyPath;
+    }
+
+    func getHttpsPort() -> Int {
+        return publicHttpsPort;
     }
 }

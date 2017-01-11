@@ -5,11 +5,11 @@
 import Foundation
 import Kitura
 
-class Controller {
+class MainController {
     let router: Router
 
     var port: Int {
-        get { return 8090 }
+        get { return 8091 }
     }
 
     var url: String {

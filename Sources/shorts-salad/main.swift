@@ -9,9 +9,11 @@ import LoggerAPI
 
 do {
     HeliumLogger.use(LoggerMessageType.info)
-    let controller = try Controller()
-
     let sslConfig = SslConfig(configPath: "config/ssl.json")
+
+    let httpController = try HttpController(publicHttpsPort: sslConfig.getHttpsPort())
+    let mainController = try MainController()
+
     let ssl = SSLConfig(withCACertificateDirectory: nil,
                               usingCertificateFile: sslConfig.getCertPath(),
                                        withKeyFile: sslConfig.getKeyPath(),
@@ -22,10 +24,9 @@ do {
     Log.info(sslConfig.getCertPath())
     Log.info(sslConfig.getKeyPath())
 
-    Kitura.addHTTPServer(onPort: controller.port, with: controller.router, withSSL: ssl)
-    Log.info("Made it here!")
+    Kitura.addHTTPServer(onPort: httpController.port, with: httpController.router)
+    Kitura.addHTTPServer(onPort: mainController.port, with: mainController.router, withSSL: ssl)
     Kitura.run()
-    Log.info("And here!?")
 } catch let error {
     Log.info(error.localizedDescription)
     Log.info("Oops... something went wrong. Server did not start!")
