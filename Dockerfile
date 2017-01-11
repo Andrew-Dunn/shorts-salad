@@ -7,9 +7,9 @@ RUN wget https://dl.eff.org/certbot-auto && \
 
 # Load code
 RUN mkdir shorts-salad
-COPY . /shorts-salad
+COPY . /root/shorts-salad
 
 # Build webserver
-RUN cd shorts-salad && \
+RUN cd /root/shorts-salad/ && \
     swift build && \
-    cd ..
+    cd /root/
