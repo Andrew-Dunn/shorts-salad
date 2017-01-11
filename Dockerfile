@@ -1,4 +1,4 @@
-FROM ibmcom/kitura-ubuntu:latest
+FROM ibmcom/swift-ubuntu:latest
 MAINTAINER Andrew Dunn <randy@🖕👖.ws>
 
 # Load code
