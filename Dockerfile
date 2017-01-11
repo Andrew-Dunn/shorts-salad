@@ -6,16 +6,15 @@ RUN wget https://dl.eff.org/certbot-auto && \
     chmod a+x certbot-auto
 
 # Download repo
+ARG CHECKOUT=master
 RUN git clone https://github.com/Andrew-Dunn/shorts-salad.git
 
 # Checkout desired branch
-ARG GIT_BRANCH=master
 RUN cd shorts-salad && \
-    git checkout $GIT_BRANCH && \
+    git checkout $CHECKOUT && \
     cd ..
 
 # Build webserver
 RUN cd shorts-salad && \
     swift build && \
     cd ..
-
