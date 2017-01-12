@@ -1,0 +1,6 @@
+{
+  "selfSigned": true,
+  "keyPath": "config/key.pem",
+  "certPath": "config/cert.pem",
+  "port": 8091
+}

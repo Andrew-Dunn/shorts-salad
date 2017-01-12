@@ -1,20 +1,22 @@
-FROM ibmcom/kitura-ubuntu:latest
+FROM ibmcom/swift-ubuntu:latest
 MAINTAINER Andrew Dunn <randy@🖕👖.ws>
 
-# Install Let's Encrypt (Base image uses Ubuntu 14.04)
-RUN wget https://dl.eff.org/certbot-auto && \
-    chmod a+x certbot-auto
+# Load code.
+RUN mkdir shorts-salad
+COPY . /root/shorts-salad
 
-# Download repo
-ARG CHECKOUT=master
-RUN git clone https://github.com/Andrew-Dunn/shorts-salad.git
+# Install Let's Encrypt (Base image uses Ubuntu 14.04).
+RUN cd /root/shorts-salad/Scripts/ && \
+    wget https://dl.eff.org/certbot-auto && \
+    chmod a+x certbot-auto && \
+    cd /root/
 
-# Checkout desired branch
-RUN cd shorts-salad && \
-    git checkout $CHECKOUT && \
-    cd ..
+# Build web app in release configuration.
+RUN cd /root/shorts-salad/ && \
+    swift build -c release && \
+    cd /root/
 
-# Build webserver
-RUN cd shorts-salad && \
-    swift build && \
-    cd ..
+# Copy any config files that end in the .docker extension to be used.
+RUN cd /root/shorts-salad/config/ && \
+    find -name "*.docker" | cut -b 3- | xargs -L1 -i bash -c 'cp {} $(echo "{}" | rev | cut -d"." -f2- | rev)' && \
+    cd /root/
