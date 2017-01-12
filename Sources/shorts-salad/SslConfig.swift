@@ -49,8 +49,8 @@ internal class SslConfig {
                 caPath = nil
             }
             enabled = true;
-        } catch let error as Error {
-            Log.warning("Could not load SSL config at \(configPath)")
+        } catch let error {
+            Log.warning("Could not load SSL config at \(configPath): \(error)")
             selfSigned = false
             keyPath = ""
             caPath = nil
