@@ -33,18 +33,18 @@ internal class SslConfig {
                                                         isDirectory: false))
             let json = JSON(data: jsonData)
 
-            selfSigned = json[selfSignedKey].bool!
-            keyPath = json[keyPathKey].string!
-            certPath = json[certPathKey].string!
+            selfSigned = json[SslConfig.selfSignedKey].bool!
+            keyPath = json[SslConfig.keyPathKey].string!
+            certPath = json[SslConfig.certPathKey].string!
 
-            if (json[httpsPortKey].int != nil) {
-                publicHttpsPort = json[httpsPortKey].int!
+            if (json[SslConfig.httpsPortKey].int != nil) {
+                publicHttpsPort = json[SslConfig.httpsPortKey].int!
             } else {
-                publicHttpsPort = defaultHttpsPort
+                publicHttpsPort = SslConfig.defaultHttpsPort
             }
 
-            if (json[caPathKey].string != nil) {
-                caPath = json[caPathKey].string!
+            if (json[SslConfig.caPathKey].string != nil) {
+                caPath = json[SslConfig.caPathKey].string!
             } else {
                 caPath = nil
             }
@@ -55,7 +55,7 @@ internal class SslConfig {
             keyPath = ""
             caPath = nil
             certPath = ""
-            publicHttpsPort = defaultHttpsPort
+            publicHttpsPort = SslConfig.defaultHttpsPort
             enabled = false
         }
     }
