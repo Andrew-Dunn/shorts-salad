@@ -1,12 +1,6 @@
 FROM ibmcom/swift-ubuntu:latest
 MAINTAINER Andrew Dunn <randy@🖕👖.ws>
 
-# Install packages required by Let's Encrypt ahead-of-time.
-RUN apt-get install -y --no-install-recommends python python-dev gcc && \
-                                               libssl-dev openssl && \
-                                               libffi-dev ca-certificates && \
-                                               libaugeas0 augeas-lenses
-
 # Load code.
 RUN mkdir shorts-salad
 COPY . /root/shorts-salad
