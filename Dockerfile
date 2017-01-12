@@ -21,3 +21,8 @@ RUN cd /root/shorts-salad/Scripts/ && \
 RUN cd /root/shorts-salad/ && \
     swift build -c release && \
     cd /root/
+
+# Copy any config files that end in the .docker extension to be used.
+RUN cd /root/shorts-salad/config/ && \
+    find -name "*.docker" | cut -b 3- | xargs -L1 -i bash -c 'cp {} $(echo "{}" | rev | cut -d"." -f2- | rev)' && \
+    cd /root/
