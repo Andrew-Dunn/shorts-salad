@@ -19,6 +19,7 @@ cat > ${SSL_CONFIG_FILE} << EOF
 {
   "selfSigned": false,
   "keyPath": "${LETSENCRYPT_DIR}/${DOMAIN}/privkey.pem",
-  "certPath": "${LETSENCRYPT_DIR}/${DOMAIN}/fullchain.pem"
+  "certPath": "${LETSENCRYPT_DIR}/${DOMAIN}/cert.pem",
+  "caPath": "${LETSENCRYPT_DIR}/${DOMAIN}/chain.pem"
 }
 EOF
