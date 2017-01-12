@@ -17,11 +17,11 @@ do {
     Kitura.addHTTPServer(onPort: httpController.port, with: httpController.router)
 
     if (sslConfig.isEnabled()) {
-        let ssl = SSLConfig(withCACertificateDirectory: nil,
-                usingCertificateFile: sslConfig.getCertPath(),
-                withKeyFile: sslConfig.getKeyPath(),
-                usingSelfSignedCerts: sslConfig.isSelfSigned(),
-                cipherSuite: "ALL")
+        let ssl = SSLConfig(withCACertificateFilePath: sslConfig.getCAPath(),
+                            usingCertificateFile: sslConfig.getCertPath(),
+                            withKeyFile: sslConfig.getKeyPath(),
+                            usingSelfSignedCerts: sslConfig.isSelfSigned(),
+                            cipherSuite: "ALL")
 
         Log.info(sslConfig.isSelfSigned().description)
         Log.info(sslConfig.getCertPath())
