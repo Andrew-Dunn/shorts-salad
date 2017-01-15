@@ -33,20 +33,25 @@ class MainController {
         }
         router.post("/slack/show-salad-link") { request, response, next in
             try response.send("").end()
-            var rawJson = Data()
-            try request.read(into: &rawJson)
-            let json = JSON(data: rawJson)
-            let responseURL = json["response_url"].string
+            var params = [String:String]()
+            let rawData = try request.readString()
+            rawData!.components(separatedBy: "\n").forEach { line in
+                let parts = line.components(separatedBy: "=")
+                params[parts[0]] = parts[1]
+            }
+            let responseURL = params["response_url"]
             if responseURL != nil {
                 let message = "<https://\(request.hostname)|:middle_finger::jeans:.ws>"
-                Log.info("Response URL: \(responseURL)")
+                Log.info("Sending message to: \(responseURL)")
                 KituraRequest.request(.post,
                                       responseURL!,
                                       parameters: [
                                           "response_type": "in_channel",
                                           "attachments": [
-                                              "fallback": message,
-                                              "pretext": message
+                                              [
+                                                  "fallback": message,
+                                                  "pretext": message
+                                              ]
                                           ]
                                       ],
                                       encoding: JSONEncoding.default).response {
