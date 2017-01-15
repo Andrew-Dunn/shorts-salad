@@ -35,9 +35,9 @@ class MainController {
             try response.send("").end()
             var params = [String:String]()
             let rawData = try request.readString()
-            rawData!.components(separatedBy: "\n").forEach { line in
+            rawData!.components(separatedBy: "&").forEach { line in
                 let parts = line.components(separatedBy: "=")
-                params[parts[0]] = parts[1]
+                params[parts[0]] = parts[1].removingPercentEncoding
             }
             let responseURL = params["response_url"]
             if responseURL != nil {
