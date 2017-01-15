@@ -27,7 +27,7 @@ class MainController {
         router = Router()
         router.all("/") { request, response, next in
             if request.method == .post {
-                Log.info((request.body?.asText)!)
+                Log.info(try request.readString()!)
             }
             try response.send("Hello World, from Kitura!").end()
         }
