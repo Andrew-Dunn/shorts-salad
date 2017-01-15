@@ -24,7 +24,7 @@ class HttpController {
         router.get("/\\.well-known/acme-challenge/",
                    middleware: StaticFileServer(path: "/tmp/shorts-salad/.well-known/acme-challenge/"))
         if (publicHttpsPort != nil) {
-            router.all("/(?!\\.well-known/acme-challenge/).+", handler: redirectToHttps)
+            router.all("/(?!\\.well-known/acme-challenge/).*", handler: redirectToHttps)
         } else {
             router.all("/", middleware: StaticFileServer())
         }
